@@ -1,6 +1,8 @@
 import {getCommentId, getId, getRandomElement, getRandomInt, getRandomLikes} from './util.js';
 
-const PHOTO_COUNT = 25;
+const PHOTO_COUNT = 19;
+const WIDTH_AVATAR_PHOTO = 35;
+const HEIGHT_AVATAR_PHOTO = 35;
 const NAMES = ['Артем', 'Андрей', 'Илья', 'Сергей'];
 const COMMENTS_ID = [];
 const DESCRIPTIONS = Array.from({length: PHOTO_COUNT}, (_, i) => `Описание_${i + 1}`);
@@ -26,16 +28,20 @@ const generateComment = () => {
   };
 };
 
-const generateDescription = () => {
-  const comments = Array.from({length: getRandomInt(0, 3)}, generateComment);
-  const id = getId();
-  return {
-    id: id,
-    url: `photos/${id}.jpg`,
-    description: DESCRIPTIONS[id - 1],
-    likes: getRandomLikes(),
-    comments: comments
-  };
+const generateDescription = (index) => {
+  const result = [];
+  for(let i = 0; i < index; i++){
+    const id = getId();
+    const comments = Array.from({length: getRandomInt(0, 3)}, generateComment);
+    result.push({
+      id: id,
+      url: `photos/${getRandomInt(1, PHOTO_COUNT)}.jpg`,
+      description: DESCRIPTIONS[i],
+      likes: getRandomLikes(),
+      comments: comments
+    });
+  }
+  return result;
 };
 
-export {PHOTO_COUNT, NAMES, DESCRIPTIONS, MESSAGES, COMMENTS_ID, generateComment, generateDescription};
+export {PHOTO_COUNT, WIDTH_AVATAR_PHOTO, HEIGHT_AVATAR_PHOTO, NAMES, DESCRIPTIONS, MESSAGES, COMMENTS_ID, generateComment, generateDescription};
