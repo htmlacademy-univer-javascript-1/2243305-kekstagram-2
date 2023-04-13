@@ -1,4 +1,5 @@
 import {HEIGHT_AVATAR_PHOTO, WIDTH_AVATAR_PHOTO} from './data.js';
+import {checkEscapePressed, isCheckModelOpen} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 
@@ -42,7 +43,7 @@ const createBigPicture = ({likes, comments, url, description}) => {
 };
 
 const closeBigPicture = () => {
-  if (document.body.classList.contains('modal-open') === false) {
+  if (!isCheckModelOpen()) {
     return;
   }
 
@@ -51,10 +52,10 @@ const closeBigPicture = () => {
   return true;
 };
 
-const escapePressed = (ev) => ev.key === 'Escape' && closeBigPicture();
+const escapePressed = (ev) => checkEscapePressed(ev) && closeBigPicture();
 
 const showBigPicture = (picture) => {
-  if (document.body.classList.contains('modal-open')) {
+  if (isCheckModelOpen()) {
     return;
   }
 

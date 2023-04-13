@@ -9,6 +9,10 @@ const getRandomInt = (a, b) => {
 
 const checkMaxLength = (str, maxLength) => str.length <= maxLength;
 
+const isCheckModelOpen = () => document.body.classList.contains('modal-open');
+
+const checkEscapePressed = (ev) => ev.key === 'Escape';
+
 const getRandomLikes = () => getRandomInt(15, 200);
 
 const getRandomElement = (arr) => arr[getRandomInt(0, arr.length - 1)];
@@ -33,5 +37,7 @@ export {
   getRandomLikes,
   getRandomElement,
   getId,
-  getCommentId
+  getCommentId,
+  checkEscapePressed,
+  isCheckModelOpen
 };

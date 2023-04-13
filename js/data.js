@@ -15,6 +15,17 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
+const ErrorMessage = {
+  SPACE: 'Разделение хеш-тегов пробелами',
+  START: 'Хеш-тег начинается с символа #',
+  REPEAT: 'Не должно быть повторения хеш-тегов',
+  MAX_LENGTH: 'Максимальная длина хеш-тега не больше 20 символов',
+  MAX_COUNT: 'Количество хеш-тегов не больше 5',
+  MAX_COM_LENGTH: 'Максимальная длина комментария 20 символов',
+  EMPTY: 'Хештег не должен быть пустым',
+  EMPTY_DESCRIPTION: 'Описание не должно быть пустым',
+};
+
 const generateComment = () => {
   const messageText = [];
   for (let i = 0; i < getRandomInt(1, 2); i++) {
@@ -44,4 +55,4 @@ const generateDescription = (index) => {
   return result;
 };
 
-export {PHOTO_COUNT, WIDTH_AVATAR_PHOTO, HEIGHT_AVATAR_PHOTO, NAMES, DESCRIPTIONS, MESSAGES, COMMENTS_ID, generateComment, generateDescription};
+export {PHOTO_COUNT, WIDTH_AVATAR_PHOTO, HEIGHT_AVATAR_PHOTO, NAMES, DESCRIPTIONS, MESSAGES, COMMENTS_ID, ErrorMessage, generateComment, generateDescription};
