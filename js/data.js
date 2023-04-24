@@ -43,7 +43,7 @@ const generateDescription = (index) => {
   const result = [];
   for(let i = 0; i < index; i++){
     const id = getId();
-    const comments = Array.from({length: getRandomInt(0, 3)}, generateComment);
+    const comments = Array.from({length: getRandomInt(0, 10)}, generateComment);
     result.push({
       id: id,
       url: `photos/${getRandomInt(1, PHOTO_COUNT)}.jpg`,
