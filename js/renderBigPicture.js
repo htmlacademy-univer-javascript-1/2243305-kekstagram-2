@@ -66,7 +66,7 @@ const closeBigPicture = () => {
 
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  window.removeEventListener('keydown', onWindowEscKeydown);
+  // window.removeEventListener('keydown', onWindowEscKeydown);
   commentsLoader.classList.remove('hidden');
   commentsLoader.removeEventListener('click', onCommentsLoaderBtnClick);
   countRenderComments = MAX_COMMENT_COUNT;
@@ -77,7 +77,8 @@ function onBigPictureCloseBtnClick() {
 }
 
 function onWindowEscKeydown(evt) {
-  if (checkEscapePressed(evt) === true) {
+  if (checkEscapePressed(evt)) {
+    evt.preventDefault();
     closeBigPicture();
   }
 }
@@ -92,8 +93,9 @@ const showBigPicture = (picture) => {
   createBigPicture(picture);
   initComments(picture);
 
+  document.addEventListener('keydown', onWindowEscKeydown);
+
   bigPictureCloseBtn.addEventListener('click', onBigPictureCloseBtnClick);
-  window.addEventListener('keydown', onWindowEscKeydown);
 };
 
-export {showBigPicture};
+export {showBigPicture, closeBigPicture};

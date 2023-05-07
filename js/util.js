@@ -1,43 +1,43 @@
-import {COMMENTS_ID} from './data.js';
-
-const getRandomInt = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
 const checkMaxLength = (str, maxLength) => str.length <= maxLength;
+
+const ErrorMessage = {
+  SPACE: 'Разделение хеш-тегов пробелами',
+  START: 'Хеш-тег начинается с символа #',
+  REPEAT: 'Не должно быть повторения хеш-тегов',
+  MAX_LENGTH: 'Максимальная длина хеш-тега не больше 20 символов',
+  MAX_COUNT: 'Количество хеш-тегов не больше 5',
+  MAX_COM_LENGTH: 'Максимальная длина комментария 20 символов',
+  EMPTY: 'Хештег не должен быть пустым',
+  EMPTY_DESCRIPTION: 'Описание не должно быть пустым',
+};
 
 const isCheckModelOpen = () => document.body.classList.contains('modal-open');
 
 const checkEscapePressed = (ev) => ev.key === 'Escape';
 
-const getRandomLikes = () => getRandomInt(15, 200);
+const showAlert = (message) => {
+  const container = document.createElement('div');
+  container.style.zIndex = '100';
+  container.style.padding = '10px';
+  container.style.position = 'absolute';
+  container.style.fontSize = '28px';
+  container.style.backgroundColor = '#eed21e';
+  container.style.position = 'absolute';
+  container.style.textAlign = 'center';
+  container.style.left = '0';
+  container.style.top = '0';
+  container.style.right = '0';
+  container.style.color = 'rgba(82,71,71,0.63)';
+  container.textContent = message;
 
-const getRandomElement = (arr) => arr[getRandomInt(0, arr.length - 1)];
-
-const getId = (() => {
-  let id = 1;
-  return () => id++;
-})();
-
-const getCommentId = () => {
-  let id = getRandomInt(1, 1000);
-  while (COMMENTS_ID.includes(id)) {
-    id = getRandomInt(1, 1000);
-  }
-  return id;
+  document.body.append(container);
 };
 
 
 export {
-  getRandomInt,
   checkMaxLength,
-  getRandomLikes,
-  getRandomElement,
-  getId,
-  getCommentId,
   checkEscapePressed,
-  isCheckModelOpen
+  isCheckModelOpen,
+  showAlert,
+  ErrorMessage,
 };
