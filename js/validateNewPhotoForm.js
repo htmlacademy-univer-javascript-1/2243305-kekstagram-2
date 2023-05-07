@@ -1,18 +1,10 @@
-import {ErrorMessage} from './data.js';
-import {checkMaxLength} from './util.js';
+import {checkMaxLength, ErrorMessage} from './util.js';
 
 window.onload = function () {
-  const form = document.getElementById('upload-select-image');
+  const form = document.querySelector('#upload-select-image');
   const hashtags = document.getElementById('text__hashtags');
   const textDescriptions = document.getElementById('text__description');
-  const submitButton = document.getElementById('upload-submit');
   const regEx = /^#[A-Za-zA-Яа-яЁё0-9]{1,19}$/;
-
-  const pristine = new Pristine(form, {
-    classTo: 'img-upload__field-wrapper',
-    errorTextParent: 'img-upload__field-wrapper',
-    errorTextClass: 'img-upload__field-wrapper'
-  });
 
   const isUnicHashtags = (hashtag) => {
     const uniq = new Set(hashtag);
@@ -76,7 +68,7 @@ window.onload = function () {
     errorMessage = '';
     const inputText = string.trim();
 
-    if(!inputText) {
+    if (!inputText) {
       return true;
     }
 
@@ -96,20 +88,22 @@ window.onload = function () {
     });
   };
 
+  const pristine = new Pristine(form, {
+    classTo: 'img-upload__field-wrapper',
+    errorTextParent: 'img-upload__field-wrapper',
+    errorTextClass: 'img-upload__field-wrapper'
+  });
+
   pristine.addValidator(hashtags, validateHashtag, error);
   pristine.addValidator(textDescriptions, validateDescriptions, error);
 
-  const onInput = () => {
-    submitButton.disabled = !pristine.validate();
-  };
-
-  hashtags.addEventListener('input', onInput);
-  textDescriptions.addEventListener('input', onInput);
-
-  form.addEventListener('submit', (e) => {
-    const valid = pristine.validate();
-    if (!valid) {
-      e.preventDefault();
+  form.addEventListener('submit', (evt) => {
+    if (!pristine.validate()) {
+      evt.preventDefault();
     }
   });
+  const tagInput = document.querySelector('.text__hashtags');
+  tagInput.onmouseover = function (evt) {
+    evt.stopPropagation();
+  };
 };

@@ -1,5 +1,10 @@
-import {PHOTO_COUNT, generateDescription} from './data.js';
 import {renderThumbnails} from './renderThumbnails.js';
+import {getData} from './api.js';
+import {setUserFormSubmit} from './userForm.js';
+import {closeBigPicture} from './renderBigPicture.js';
 
-const descriptions = generateDescription(PHOTO_COUNT);
-renderThumbnails(descriptions);
+getData((descriptions) => {
+  renderThumbnails(descriptions);
+});
+
+setUserFormSubmit(closeBigPicture);
