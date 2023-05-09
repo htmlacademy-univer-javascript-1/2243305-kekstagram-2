@@ -1,4 +1,4 @@
-import {showAlert} from './util.js';
+import {showError} from './util.js';
 
 const filter = document.querySelector('.img-filters');
 
@@ -10,7 +10,7 @@ const getData = (onSuccess) => {
       filter.classList.remove('img-filters--inactive');
     })
     .catch(() => {
-      showAlert('Ошибка загрузки данных с сервера!');
+      showError('Ошибка загрузки данных с сервера!');
     });
 };
 
