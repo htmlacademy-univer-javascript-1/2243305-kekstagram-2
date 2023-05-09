@@ -11,78 +11,55 @@ const defaultBtn = document.querySelector('#filter-default');
 const randomBtn = document.querySelector('#filter-random');
 const discussBtn = document.querySelector('#filter-discussed');
 
-const setRandomOrder = (cb) => {
-  defaultBtn.addEventListener('click', () => {
-    randomBtn.classList.add('img-filters__button--active');
-    defaultBtn.classList.remove('img-filters__button--active');
-    discussBtn.classList.remove('img-filters__button--active');
-    debounce(renderThumbnailsRandom(cb));
-  });
-};
-
-const setDiscussOrder = (cb) => {
-  defaultBtn.addEventListener('click', () => {
-    discussBtn.classList.add('img-filters__button--active');
-    randomBtn.classList.remove('img-filters__button--active');
-    defaultBtn.classList.remove('img-filters__button--active');
-    debounce(renderThumbnailsDiscuss(cb));
-  });
-};
-
-const setDefaultOrder = (cb) => {
+const setDefaultPictures = (item) => {
   defaultBtn.addEventListener('click', () => {
     defaultBtn.classList.add('img-filters__button--active');
     randomBtn.classList.remove('img-filters__button--active');
     discussBtn.classList.remove('img-filters__button--active');
-    debounce(renderThumbnailsDefault(cb));
+    debounce(renderThumbnailsDefault(item));
   });
 };
 
-const getPhotoRank = (photo) => photo.comments.length;
+const setRandomPictures = (item) => {
+  randomBtn.addEventListener('click', () => {
+    randomBtn.classList.add('img-filters__button--active');
+    defaultBtn.classList.remove('img-filters__button--active');
+    discussBtn.classList.remove('img-filters__button--active');
+    debounce(renderThumbnailsRandom(item));
+  });
+};
 
-const comparePhotos = (photoA, photoB) => {
-  const rankA = getPhotoRank(photoA);
-  const rankB = getPhotoRank(photoB);
+const setDiscussPictures = (item) => {
+  discussBtn.addEventListener('click', () => {
+    discussBtn.classList.add('img-filters__button--active');
+    randomBtn.classList.remove('img-filters__button--active');
+    defaultBtn.classList.remove('img-filters__button--active');
+    debounce(renderThumbnailsDiscuss(item));
+  });
+};
+
+const getPictureRank = (picture) => picture.comments.length;
+
+const comparePictures = (picA, picB) => {
+  const rankA = getPictureRank(picA);
+  const rankB = getPictureRank(picB);
   return rankB - rankA;
 };
 
 
-function renderThumbnailsDefault(descriptions) {
+function renderThumbnailsDefault(description) {
   const fragment = document.createDocumentFragment();
-  for (const description of descriptions) {
-    const picture = pictureTemplate.cloneNode(true);
-    picture.querySelector('.picture__img').src = description.url;
+  for (const desc of description) {
+    const picture = pictureTemplate.cloneNode(true).content;
+    picture.querySelector('.picture__img').src = desc.url;
     picture.querySelector('.picture__img').addEventListener('click', (evt) => {
       evt.preventDefault();
-      showBigPicture(description);
+      showBigPicture(desc);
     });
-    picture.querySelector('.picture__likes').textContent = description.likes;
-    picture.querySelector('.picture__comments').textContent = description.comments.length;
+    picture.querySelector('.picture__likes').textContent = desc.likes;
+    picture.querySelector('.picture__comments').textContent = desc.comments.length;
     fragment.appendChild(picture);
   }
-  pictureContainer.innerHTML = '';
-  pictureContainer.appendChild(firstChild);
-  pictureContainer.appendChild(secondChild);
-  pictureContainer.appendChild(fragment);
-}
-
-function renderThumbnailsDiscuss(descriptions) {
-  const fragment = document.createDocumentFragment();
-
-  descriptions
-    .slice()
-    .sort(comparePhotos)
-    .forEach((description) => {
-      const photo = pictureTemplate.cloneNode(true).content;
-      photo.querySelector('.picture__img').src = description.url;
-      photo.querySelector('.picture__img').addEventListener('click', (evt) => {
-        evt.preventDefault();
-        showBigPicture(description);
-      });
-      photo.querySelector('.picture__likes').textContent = description.likes;
-      photo.querySelector('.picture__comments').textContent = description.comments.length;
-      fragment.appendChild(photo);
-    });
   pictureContainer.innerHTML = '';
   pictureContainer.appendChild(firstChild);
   pictureContainer.appendChild(secondChild);
@@ -96,15 +73,15 @@ function renderThumbnailsRandom(descriptions) {
     .slice()
     .sort(() => Math.random() - 0.5)
     .forEach((description) => {
-      const photo = pictureTemplate.cloneNode(true).content;
-      photo.querySelector('.picture__img').src = description.url;
-      photo.querySelector('.picture__img').addEventListener('click', (evt) => {
+      const picture = pictureTemplate.cloneNode(true).content;
+      picture.querySelector('.picture__img').src = description.url;
+      picture.querySelector('.picture__img').addEventListener('click', (evt) => {
         evt.preventDefault();
         showBigPicture(description);
       });
-      photo.querySelector('.picture__likes').textContent = description.likes;
-      photo.querySelector('.picture__comments').textContent = description.comments.length;
-      fragment.appendChild(photo);
+      picture.querySelector('.picture__likes').textContent = description.likes;
+      picture.querySelector('.picture__comments').textContent = description.comments.length;
+      fragment.appendChild(picture);
     });
   pictureContainer.innerHTML = '';
   pictureContainer.appendChild(firstChild);
@@ -112,4 +89,27 @@ function renderThumbnailsRandom(descriptions) {
   pictureContainer.appendChild(fragment);
 }
 
-export {renderThumbnailsDefault, setRandomOrder, setDiscussOrder, setDefaultOrder};
+function renderThumbnailsDiscuss(descriptions) {
+  const fragment = document.createDocumentFragment();
+
+  descriptions
+    .slice()
+    .sort(comparePictures)
+    .forEach((description) => {
+      const picture = pictureTemplate.cloneNode(true).content;
+      picture.querySelector('.picture__img').src = description.url;
+      picture.querySelector('.picture__img').addEventListener('click', (evt) => {
+        evt.preventDefault();
+        showBigPicture(description);
+      });
+      picture.querySelector('.picture__likes').textContent = description.likes;
+      picture.querySelector('.picture__comments').textContent = description.comments.length;
+      fragment.appendChild(picture);
+    });
+  pictureContainer.innerHTML = '';
+  pictureContainer.appendChild(firstChild);
+  pictureContainer.appendChild(secondChild);
+  pictureContainer.appendChild(fragment);
+}
+
+export {renderThumbnailsDefault, setDiscussPictures, setRandomPictures, setDefaultPictures};
