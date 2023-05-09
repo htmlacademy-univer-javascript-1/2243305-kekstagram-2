@@ -1,4 +1,4 @@
-import {checkEscapePressed} from './util.js';
+import {checkEscapePressed, showError} from './util.js';
 import {sendData} from './api.js';
 
 const form = document.querySelector('.img-upload__form');
@@ -8,6 +8,8 @@ const submitButton = document.querySelector('#upload-submit');
 const formOverlay = document.querySelector('.img-upload__overlay');
 
 const changedValue = document.querySelector('.scale__control--value');
+const redactedPictureContainer = document.querySelector('.img-upload__preview');
+const redactedPicture = redactedPictureContainer.children[0];
 
 const onUploadPictureInChange = (evt) => {
   if (evt.target.value) {
@@ -171,6 +173,9 @@ function setUserFormSubmit(onSuccess) {
     if (error === 'error') {
       isValid = true;
     }
+    if (error === 'error') {
+      isValid = true;
+    }
     if (isValid) {
       blockButtonSubmit();
       sendData(
@@ -190,6 +195,23 @@ function setUserFormSubmit(onSuccess) {
     }
   });
 }
+
+const FILE_TYPES = ['png', 'jpg', 'jpeg', 'gif'];
+
+const fileChooser = document.querySelector('.img-upload__start input[type=file]');
+fileChooser.addEventListener('change', () => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    redactedPicture.src = URL.createObjectURL(file);
+  } else {
+    formOverlay.classList.add('hidden');
+    showError('Неправильный тип файла', 5000);
+  }
+});
 
 const tagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');

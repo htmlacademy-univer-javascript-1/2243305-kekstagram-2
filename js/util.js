@@ -15,7 +15,7 @@ const isCheckModelOpen = () => document.body.classList.contains('modal-open');
 
 const checkEscapePressed = (ev) => ev.key === 'Escape';
 
-const showAlert = (message) => {
+const showError = (message, time) => {
   const container = document.createElement('div');
   container.style.zIndex = '100';
   container.style.padding = '10px';
@@ -31,6 +31,10 @@ const showAlert = (message) => {
   container.textContent = message;
 
   document.body.append(container);
+
+  setTimeout(() => {
+    container.remove();
+  }, time);
 };
 
 function debounce(callback, timeoutDelay = 500) {
@@ -41,25 +45,11 @@ function debounce(callback, timeoutDelay = 500) {
   };
 }
 
-function throttle (callback, delayBetweenFrames) {
-  let lastTime = 0;
-
-  return (...rest) => {
-    const now = new Date();
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
-}
-
-
 export {
   checkMaxLength,
   checkEscapePressed,
   isCheckModelOpen,
-  showAlert,
+  showError,
   debounce,
-  throttle,
   ErrorMessage,
 };
