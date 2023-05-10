@@ -11,30 +11,30 @@ const defaultBtn = document.querySelector('#filter-default');
 const randomBtn = document.querySelector('#filter-random');
 const discussBtn = document.querySelector('#filter-discussed');
 
-const setDefaultPictures = (item) => {
+const setDefaultPictures = (callback) => {
   defaultBtn.addEventListener('click', () => {
     defaultBtn.classList.add('img-filters__button--active');
     randomBtn.classList.remove('img-filters__button--active');
     discussBtn.classList.remove('img-filters__button--active');
-    debounce(renderThumbnailsDefault(item));
+    debounce(renderThumbnails(callback));
   });
 };
 
-const setRandomPictures = (item) => {
+const setRandomPictures = (callback) => {
   randomBtn.addEventListener('click', () => {
     randomBtn.classList.add('img-filters__button--active');
     defaultBtn.classList.remove('img-filters__button--active');
     discussBtn.classList.remove('img-filters__button--active');
-    debounce(renderThumbnailsRandom(item));
+    debounce(renderThumbnailsRandom(callback));
   });
 };
 
-const setDiscussPictures = (item) => {
+const setDiscussPictures = (callback) => {
   discussBtn.addEventListener('click', () => {
     discussBtn.classList.add('img-filters__button--active');
     randomBtn.classList.remove('img-filters__button--active');
     defaultBtn.classList.remove('img-filters__button--active');
-    debounce(renderThumbnailsDiscuss(item));
+    debounce(renderThumbnailsDiscuss(callback));
   });
 };
 
@@ -47,7 +47,7 @@ const comparePictures = (picA, picB) => {
 };
 
 
-function renderThumbnailsDefault(description) {
+function renderThumbnails(description) {
   const fragment = document.createDocumentFragment();
   for (const desc of description) {
     const picture = pictureTemplate.cloneNode(true).content;
@@ -112,4 +112,4 @@ function renderThumbnailsDiscuss(descriptions) {
   pictureContainer.appendChild(fragment);
 }
 
-export {renderThumbnailsDefault, setDiscussPictures, setRandomPictures, setDefaultPictures};
+export {renderThumbnails, setDiscussPictures, setRandomPictures, setDefaultPictures};

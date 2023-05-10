@@ -3,13 +3,15 @@ const uploadForm = document.querySelector('#upload-select-image');
 const scaleControlValue = uploadForm.querySelector('.scale__control--value');
 const scaleControlSmallerBtn = uploadForm.querySelector('.scale__control--smaller');
 const scaleControlBiggerBtn = uploadForm.querySelector('.scale__control--bigger');
-const imgUploadPreview = document.querySelector('.img-upload__preview img');
+const imgUploadPreview = document.querySelector('.img-upload__preview').children[0];
 
 const effectList = document.querySelectorAll('.effects__item input');
 
 const slider = document.querySelector('.effect-level__slider');
 const sliderValue = document.querySelector('.effect-level__value');
 const sliderElement = document.querySelector('.effect-level');
+
+scaleControlValue.value = '100%';
 
 const filterUpdate = {
   none: [0, 100, 1, '', ''],
@@ -82,3 +84,5 @@ scaleControlSmallerBtn.addEventListener('click', () => {
   scaleControlValue.value = `${scaleValue}%`;
   imgUploadPreview.style.transform = `scale(${scaleValue / 100})`;
 });
+
+export {selectedEffect};

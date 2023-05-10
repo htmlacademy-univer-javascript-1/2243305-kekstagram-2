@@ -59,31 +59,39 @@ const initComments = ({comments}) => {
   commentsLoader.addEventListener('click', onCommentsLoaderBtnClick);
 };
 
-const closeBigPicture = () => {
+const onBigPictureInChange = (evt) => {
+  if (evt.target.value) {
+    showBigPicture();
+  }
+};
+
+const onWindowEscKeydown = (evt) => {
+  if (checkEscapePressed(evt)) {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+};
+
+function closeBigPicture() {
   if (!isCheckModelOpen()) {
     return;
   }
 
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  // window.removeEventListener('keydown', onWindowEscKeydown);
   commentsLoader.classList.remove('hidden');
   commentsLoader.removeEventListener('click', onCommentsLoaderBtnClick);
   countRenderComments = MAX_COMMENT_COUNT;
-};
+
+  document.removeEventListener('click', onWindowEscKeydown);
+  bigPictureCloseBtn.removeEventListener('click', onBigPictureInChange);
+}
 
 function onBigPictureCloseBtnClick() {
   closeBigPicture();
 }
 
-function onWindowEscKeydown(evt) {
-  if (checkEscapePressed(evt)) {
-    evt.preventDefault();
-    closeBigPicture();
-  }
-}
-
-const showBigPicture = (picture) => {
+function showBigPicture(picture)  {
   if (isCheckModelOpen()) {
     return;
   }
@@ -96,6 +104,8 @@ const showBigPicture = (picture) => {
   document.addEventListener('keydown', onWindowEscKeydown);
 
   bigPictureCloseBtn.addEventListener('click', onBigPictureCloseBtnClick);
-};
+}
+
+bigPicture.addEventListener('change', onBigPictureInChange);
 
 export {showBigPicture, closeBigPicture};

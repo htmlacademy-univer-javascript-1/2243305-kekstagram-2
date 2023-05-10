@@ -91,7 +91,7 @@ window.onload = function () {
   const pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
-    errorTextClass: 'img-upload__field-wrapper'
+    errorTextClass: 'img-upload__field-wrapper-text'
   });
 
   pristine.addValidator(hashtags, validateHashtag, error);

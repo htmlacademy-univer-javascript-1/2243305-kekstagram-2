@@ -1,15 +1,17 @@
 import {checkEscapePressed, showError} from './util.js';
 import {sendData} from './api.js';
+import {selectedEffect} from './changePicture.js';
 
 const form = document.querySelector('.img-upload__form');
-const uploadedPhoto = form.querySelector('#upload-file');
-const upCansel = document.querySelector('#upload-cancel');
+const uploadedPicture = form.querySelector('#upload-file');
+const uploadCancel = document.querySelector('#upload-cancel');
 const submitButton = document.querySelector('#upload-submit');
 const formOverlay = document.querySelector('.img-upload__overlay');
 
 const changedValue = document.querySelector('.scale__control--value');
 const redactedPictureContainer = document.querySelector('.img-upload__preview');
 const redactedPicture = redactedPictureContainer.children[0];
+const sliderElement = document.querySelector('.effect-level');
 
 const onUploadPictureInChange = (evt) => {
   if (evt.target.value) {
@@ -28,26 +30,28 @@ const onUploadPictureEscKeydown = (evt) => {
 };
 
 function openUploadOverlay() {
+  selectedEffect('none', [0, 100, 1, '', '']);
   changedValue.value = '100%';
+  sliderElement.classList.add('hidden');
   formOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onUploadPictureEscKeydown);
-  upCansel.addEventListener('click', closeUploadOverlay);
+  uploadCancel.addEventListener('click', closeUploadOverlay);
 }
 
 function closeUploadOverlay() {
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onUploadPictureEscKeydown);
-  upCansel.removeEventListener('click', closeUploadOverlay);
+  uploadCancel.removeEventListener('click', closeUploadOverlay);
 
   formOverlay.classList.add('hidden');
-  uploadedPhoto.value = null;
-  uploadedPhoto.blur();
+  uploadedPicture.value = null;
+  uploadedPicture.blur();
 }
 
-uploadedPhoto.addEventListener('change', onUploadPictureInChange);
+uploadedPicture.addEventListener('change', onUploadPictureInChange);
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -87,7 +91,7 @@ function closeErrorMessage() {
   errorPlace.classList.add('hidden');
 
   document.addEventListener('keydown', onUploadPictureEscKeydown);
-  upCansel.addEventListener('click', closeUploadOverlay);
+  uploadCancel.addEventListener('click', closeUploadOverlay);
 
   errorButton.removeEventListener('click', closeErrorMessage);
   document.removeEventListener('keydown', onErrorMessageEscKeydown);
@@ -109,7 +113,7 @@ const onSendFail = () => {
   document.addEventListener('keydown', onErrorMessageEscKeydown);
   document.addEventListener('click', closeErrorMessage);
 
-  upCansel.removeEventListener('click', closeUploadOverlay);
+  uploadCancel.removeEventListener('click', closeUploadOverlay);
   document.removeEventListener('keydown', onUploadPictureEscKeydown);
 };
 
@@ -136,14 +140,14 @@ function closeSuccessMessage() {
   const commentPlacer = document.querySelector('.text__description');
 
   document.addEventListener('keydown', onUploadPictureEscKeydown);
-  upCansel.addEventListener('click', closeUploadOverlay);
+  uploadCancel.addEventListener('click', closeUploadOverlay);
 
   submitButton.removeEventListener('click', closeSuccessMessage);
   document.removeEventListener('keydown', onSuccessMessageEscKeydown);
   document.removeEventListener('click', closeSuccessMessage);
 
-  uploadedPhoto.value = null;
-  uploadedPhoto.blur();
+  uploadedPicture.value = null;
+  uploadedPicture.blur();
   tagPlacer.value = null;
   commentPlacer.value = null;
 }
@@ -160,7 +164,7 @@ const onSuccessMessage = () => {
   document.addEventListener('keydown', onSuccessMessageEscKeydown);
   document.addEventListener('click', closeSuccessMessage);
 
-  upCansel.removeEventListener('click', closeUploadOverlay);
+  uploadCancel.removeEventListener('click', closeUploadOverlay);
   document.removeEventListener('keydown', onUploadPictureEscKeydown);
 };
 
@@ -170,9 +174,6 @@ function setUserFormSubmit(onSuccess) {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     let isValid = pristine.validate();
-    if (error === 'error') {
-      isValid = true;
-    }
     if (error === 'error') {
       isValid = true;
     }
@@ -209,7 +210,8 @@ fileChooser.addEventListener('change', () => {
     redactedPicture.src = URL.createObjectURL(file);
   } else {
     formOverlay.classList.add('hidden');
-    showError('Неправильный тип файла', 5000);
+    showError('Неправильный тип файла', 1500);
+    document.body.classList.remove('modal-open');
   }
 });
 
